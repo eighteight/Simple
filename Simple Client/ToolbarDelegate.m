@@ -39,7 +39,9 @@ static NSString * const kServersMenuItemIdentifier = @"ServersMenuItemIdentifier
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
 {
-    return @[kStatusItemIdentifier, NSToolbarFlexibleSpaceItemIdentifier, kServersMenuItemIdentifier];
+    // server menu at the left, status box centered (see toolbarWillAddItem:)
+    // — the layout the app has always had
+    return @[kServersMenuItemIdentifier, kStatusItemIdentifier];
 }
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
