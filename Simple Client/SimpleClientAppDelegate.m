@@ -80,6 +80,13 @@
     
     [[self.view window] setContentMinSize:(NSSize){400.0,300.0}];
 	[[self.view window] setDelegate:self];
+
+    // macOS 11+ defaults to the compact unified toolbar style, which
+    // collapses our view-based toolbar items (server menu, status box)
+    // into the overflow menu — use the classic expanded layout instead
+    if (@available(macOS 11.0, *)) {
+        [[self.view window] setToolbarStyle:NSWindowToolbarStyleExpanded];
+    }
 }
 
 - (NSArray *)selectedServerDescriptions

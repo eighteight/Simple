@@ -56,7 +56,9 @@ static NSString * const kServersMenuItemIdentifier = @"ServersMenuItemIdentifier
         [item setPaletteLabel:@"Source"];
         [item setToolTip:@"Select a Syphon Server"];
         [item setView:availableServersMenu];
+        [self sizeItem:item toView:availableServersMenu];
         NSMenuItem *menuForm = [[NSMenuItem alloc] init];
+        [menuForm setTitle:@"Source"];
         [menuForm setMenu:[availableServersMenu menu]];
         [item setMenuFormRepresentation:menuForm];
     }
@@ -67,6 +69,7 @@ static NSString * const kServersMenuItemIdentifier = @"ServersMenuItemIdentifier
         [item setToolTip:@"Status"];
         [statusBox setCornerRadius:4.0];
         [item setView:statusBox];
+        [self sizeItem:item toView:statusBox];
     }
     else
     {
@@ -74,6 +77,18 @@ static NSString * const kServersMenuItemIdentifier = @"ServersMenuItemIdentifier
         item = nil;
     }
     return item;
+}
+
+// When built with a modern SDK, NSToolbarItem no longer derives its size
+// from the custom view's frame, so view-based items collapse and vanish
+// into the overflow menu. Pin them to the size they have in the nib, as
+// old SDKs did implicitly.
+- (void)sizeItem:(NSToolbarItem *)item toView:(NSView *)view
+{
+    NSSize size = view.frame.size;
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    [view.widthAnchor constraintEqualToConstant:size.width].active = YES;
+    [view.heightAnchor constraintEqualToConstant:size.height].active = YES;
 }
 
 - (void)toolbarWillAddItem:(NSNotification *)notification
